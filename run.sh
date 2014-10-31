@@ -2,7 +2,7 @@
 
 VOLUME_HOME="/var/lib/mysql"
 
-# Possibly invoke the inherited script to create the admin user.
+# Possibly invoke inherited scripts to install MySQL and create the admin user.
 if [[ ! -d $VOLUME_HOME/mysql ]]; then
     echo "=> An empty or uninitialized MySQL volume is detected in $VOLUME_HOME"
     echo "=> Installing MySQL ..."
