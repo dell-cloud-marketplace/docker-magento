@@ -20,14 +20,6 @@ RUN mv magento-1.9.0.1.tar.gz /tmp
 RUN cd /tmp && tar -zxvf magento-1.9.0.1.tar.gz
 RUN mv /tmp/magento /app
 
-# Link the application folder.
-RUN ln -s /app /var/www/html
-
-# Configure permissions.
-RUN chmod -R o+w /app/media /app/var
-RUN chmod o+w /app/app/etc
-RUN cd /app && chown -R www-data .
-
 # Add scripts and make them executable.
 ADD run.sh /run.sh
 RUN chmod +x /*.sh

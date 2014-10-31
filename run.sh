@@ -14,7 +14,7 @@ else
 fi
 
 # Create the magento database if it doesn't exist. 
-if ! mysql -u root -e 'use magento'; then
+if [[ ! -d $VOLUME_HOME/magento ]]; then
 
     # Start MySQL
     /usr/bin/mysqld_safe > /dev/null 2>&1 &
@@ -45,6 +45,19 @@ if ! mysql -u root -e 'use magento'; then
 
     mysqladmin -uroot shutdown
     sleep 5
+fi
+
+# If the application directory is empty, copy the site.
+APPLICATION_HOME="/var/www/html"
+
+if [ ! "$(ls -A $APPLICATION_HOME)" ]; then
+    # Copy the application folder.
+    cp -r /app/* $APPLICATION_HOME
+
+    # Configure permissions.
+    chmod -R o+w $APPLICATION_HOME/media $APPLICATION_HOME/var
+    chmod o+w $APPLICATION_HOME$APPLICATION_HOME/etc
+    cd $APPLICATION_HOME && chown -R www-data .
 fi
 
 exec supervisord -n
