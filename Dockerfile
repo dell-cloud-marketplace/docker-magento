@@ -1,35 +1,40 @@
-FROM dell/lamp-base:v0.1
+FROM dell/lamp-base:1.0
 MAINTAINER Dell Cloud Market Place <Cloud_Marketplace@dell.com>
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install php5-mcrypt
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install openssh-server
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install php5-curl
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install php5-gd
 RUN php5enmod mcrypt
 
-# Add image configuration and scripts
-ADD start-sshd.conf /etc/supervisor/conf.d/start-sshd.conf
+# Update Apache permissions.
+RUN sed -i 's/AllowOverride Limit/AllowOverride All/g' \
+    /etc/apache2/sites-available/000-default.conf
 
+# Clean the application folder.
+RUN rm -fr /var/www/html
 
-# OpenSSH configuration
-RUN mkdir -p /var/run/sshd
-RUN echo "root:admin123" | chpasswd
-RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-
-# Config to enable .htaccessi and enable Magento portal
-ADD apache_default /etc/apache2/sites-available/000-default.conf
-RUN a2enmod rewrite
-
-#Get Magento files
+# Get the Magento files
 RUN wget http://www.magentocommerce.com/downloads/assets/1.9.0.1/magento-1.9.0.1.tar.gz
 RUN mv magento-1.9.0.1.tar.gz /tmp
 RUN cd /tmp && tar -zxvf magento-1.9.0.1.tar.gz
-RUN mv /tmp/magento /app -f
+RUN mv /tmp/magento /app
 
+# Link the application folder.
+RUN ln -s /app /var/www/html
+
+# Configure permissions.
 RUN chmod -R o+w /app/media /app/var
 RUN chmod o+w /app/app/etc
-RUN cd /app && wget http://sourceforge.net/projects/adminer/files/latest/download?source=files
-RUN cd /app && mv download\?source\=files adminer.php
+RUN cd /app && chown -R www-data .
 
-RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
+# Add scripts and make them executable.
+ADD run.sh /run.sh
+RUN chmod +x /*.sh
 
-EXPOSE 80 3306 22 443
+# Add volumes for MySQL and the application.
+VOLUME ["/var/lib/mysql", "/var/www/html"]
+
+EXPOSE 80 3306 443
+
 CMD ["/run.sh"]
