@@ -1,6 +1,9 @@
 FROM dell/lamp-base:1.0
 MAINTAINER Dell Cloud Market Place <Cloud_Marketplace@dell.com>
 
+# Do an update of the base packages.
+RUN apt-get update --fix-missing
+
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install php5-mcrypt
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install openssh-server
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install php5-curl
