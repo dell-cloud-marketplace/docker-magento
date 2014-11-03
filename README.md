@@ -1,105 +1,166 @@
-##  Magento ONE
-Magento with db manager running easily in just one build / run.
+# docker-magento
+This image installs [Magento](http://magento.com/), an open-source content management system for e-commerce web sites.
 
-### What's bundled :
-- Magento 1.9.0.1
-- Adminer (Db Manager)
-- Ubuntu 14.04 with shell access
-- AMP (Apache (2.0) / Php (5.5.9) / Mysql)
-- Supervisor [to keep them up and running all time]
+## Components
+The stack comprises the following components:
 
-### How to Run using docker hub
-This is simple and one command that does it all
-> docker run -d -p 80:80 -p 2222:22 ilampirai/magentoone
+Name       | Version                   | Description
+-----------|---------------------------|------------------------------
+Magento    | 1.9.0.1 | E-commerce content management system
+Ubuntu     | see [docker-lamp-base](https://github.com/dell-cloud-marketplace/docker-lamp-base)                    | Operating system
+MySQL      | see [docker-lamp-base](https://github.com/dell-cloud-marketplace/docker-lamp-base)      | Database
+Apache     | see [docker-lamp-base](https://github.com/dell-cloud-marketplace/docker-lamp-base)      | Web server
+PHP        | see [docker-lamp-base](https://github.com/dell-cloud-marketplace/docker-lamp-base)      | Scripting language
 
-Thats it, The docker image will be pulled and start the container automatically.
+## Usage
 
-### How to build & run :
-Step 1 : Build
-Get into your server with SHELL access. And run a git pull which follows
-> git clone https://github.com/ilampirai/magentoone.git .
+### 1. Start the Container
+If you wish to create data volumes, which will survive a restart or recreation of the container, please follow the instructions in [Advanced Usage](#advanced-usage).
 
-NOTE: There is a tiny little dot in the end
+#### A. Basic Usage
+Start your container with:
 
-This will get basic files for building our docker image. Then start the build using
-> docker build -t {sitename}/magento .
+ - Ports 80, 443 (Apache Web Server) and 3306 (MySQL) exposed.
+ - A named container (**magento**).
 
-NOTE: There is a tiny little dot in the end
+As follows:
 
-This will take some time wait till the docker finish building. Once done, Docker will bring a success message.
+```no-highlight
+sudo docker run -d -p 80:80 -p 443:443 -p 3306:3306 --name magento dell/magento
+```
 
-Step 2 : Run
-Using the docker image we build we can bring the server up in seconds. 
+<a name="advanced-usage"></a>
+#### B. Advanced Usage
+Start your container with:
 
-Just execute the final shell command  
-> docker run -d -p 80:80 -p 2222:22 {sitename}/magento
+- Ports 80, 443 (Apache Web Server) and 3306 (MySQL) exposed.
+- Two data volumes (which will survive a restart or recreation of the container). The MySQL data is available in **/data/mysql** on the host. The PHP application files are available in **/app** on the host.
+- A named container (**magento**).
 
-This gives a container ID and your new magento is ready to be installed.
+As follows:
 
-### Installing Magento :
-Haha Not going to tell you the whole process just the starting point, Hoping you know the rest.
+```no-highlight
+sudo docker run -d -p 80:80 -p 3306:3306 -p 443:443 -v /app:/var/www/html \
+-v /data/mysql:/var/lib/mysql --name lamp dell/magento
+```
 
-Open a browser and type 
-> http://your.ip.address-or-sitename.com/
+### 2. Check the Log Files
 
-You can see a brand new magneto waiting to be installed.
+Check the logs for the randomly generated **admin** and **magento** MySQL passwords:
 
-Proceed the magento setup and when you are in need of Database details,
-There are two users for us to choose.
-First is our default root user with only the localhost connection, the logins are 
-> root / unknown
+```no-highlight
+sudo docker logs magento
+```
 
-Second is the user with external access, With which you can login from other servers too username is admin
+Look for output similar to the following text:
 
-To find your password for admin you must type 
-> docker ps
+```no-highlight
+========================================================================
+You can now connect to this MySQL Server using:
 
-which shows the running containers and id note down the container id
-Then run
-> docker logs {container id}
+    mysql -uadmin -pMYHU4RejDh0q -h<host> -P<port>
 
-That will print down the password like 
+Please remember to change the above password as soon as possible!
+MySQL user 'root' has no password but only allows local connections
+========================================================================
+=> Waiting for confirmation of MySQL service startup
+========================================================================
 
-mysql -uadmin -pXXXXXXXXXXX -h<host> -P<port>
+MySQL magento user password: ooVoh7aedael
 
-you can use any account since we are running magento only from localhost.
+========================================================================
+```
 
-After finding out the password or using root account login into 
-> http://your.ip.address-or-sitename.com/adminer.php
-NOTE : In a separate tab
+Make a secure note of:
 
-You will get your Database Manager. 
-Create a new database for Magento and use this info in Magento installation process and proceed. 
+* The admin user password (in this case **MYHU4RejDh0q**)
+* The magento user password (in this case **ooVoh7aedael**)
 
-Thats it your Magento store is now running!!!!
+You will need the **magento** user password, shortly, so please test the connection to MySQL:
 
-### Shell Access to your Magento :
-To access files you can use the shell access with 
-- Host : your site ip or domain
-- Port : 2222
-- User : root
-- Pass : admin123
+```no-highlight
+mysql -u magento -pooVoh7aedael -h127.0.0.1 -P3306
+```
 
-Make sure you change the password on first login this is just a easy password that anyone can hack.
-> passwd
-this will help you set new password.
+### 3. Configure Magento
+Access the container from your browser:
 
-That's the full story for now and this is not the end some updates like 
-- File Editor
-- Selected version of magento
-- Browser Terminal
-are in development phase and will be added soon.
+```no-highlight
+http://<ip address>
+```
 
-Thanks to tutum-docker for LAMP, That gave me a good start.
+OR
+```no-highlight
+https://<ip address>
+```
 
+**We strongly recommend that you connect via HTTPS**, for this step, and all subsequent administrative tasks, if the container is running outside your local machine (e.g. in the Cloud). Your browser will warn you that the certificate is not trusted. If you are unclear about how to proceed, please consult your browser's documentation on how to accept the certificate.
 
+#### Step 1: Welcome to Magento's Installation Wizard!
 
+Read the license, and if you accept:
 
+* Check **I agree to the above terms and conditions**.
+* Click on **Continue**.
 
+#### Step 2: Localization
+Choose your settings for:
 
+* Locale
+* Time Zone
+* Default Currency
 
+Click on **Continue**.
 
+#### Step 3: Configuration
+Complete the required information:
 
+* Database Type: **MySQL**
+* Host: **localhost**
+* Database Name: **magento**
+* User Name: **magento**
+* User Password *<value read from the logs, earlier>*
+* Tables Prefix: (optional)
 
+Next, please:
 
+* Check **Use Secure URLs**.
+* Check **Run admin interface with SSL**.
 
+Click on **Continue**.
+
+#### Step 4: Create Admin Account
+Provide the following details for the **admin** account:
+
+* First Name
+* Last Name
+* Email
+* Username
+* Password / Confirm Password
+
+Click on **Continue**.
+
+### Step 5: You're All Set!
+Make a secure note of your encryption key (near the bottom of the page).
+
+You may wish to complete the survey.
+
+Next, click on **Go to Backend**, and login with your admin name and password.
+
+## Some Housekeeping
+
+### Remove Old Messages
+After you log in, you will see message (At the top right hand side of the screen) saying: "You have 1 critical, 5 major, 19 minor and 56 notice unread message(s)." Some of these messages date back to 2008.
+
+Click on link **Go to messages**. From there, click on **Select All** (LHS, near the top), select action **Remove** and click on **Submit** (RHS, near the top).
+
+### Set the Unsecure URL
+Select option **System -> Configuration -> Web -> Unsecure**. Change the Base URL from **https** to **http**. If you don't do this you will get an error when upload images.
+
+## Reference
+
+### Image Details
+
+Inspired by [ilampirai/magentoone](https://github.com/ilampirai/magentoone)
+
+Pre-built Image | [https://registry.hub.docker.com/u/dell/magento](https://registry.hub.docker.com/u/dell/magento) 
