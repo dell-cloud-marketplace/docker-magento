@@ -119,7 +119,7 @@ Complete the required information:
 * Host: **localhost**
 * Database Name: **magento**
 * User Name: **magento**
-* User Password *<value read from the logs, earlier>*
+* User Password: *the magento user password read from the logs*
 * Tables Prefix: (optional)
 
 Next, please:
