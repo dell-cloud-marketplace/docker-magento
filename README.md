@@ -150,7 +150,7 @@ Next, click on **Go to Backend**, and login with your admin name and password.
 ## Some Housekeeping
 
 ### Remove Old Messages
-After you log in, you will see message (at the top right hand side of the screen) saying: "You have 1 critical, 5 major, 19 minor and 56 notice unread message(s)." Some of these messages date back to 2008.
+After you log in, you will see a warning (at the top right hand side of the screen) saying: "You have 1 critical, 5 major, 19 minor and 56 notice unread message(s)." Some of these messages date back to 2008.
 
 Click on link **Go to messages**. From there, click on **Select All** (LHS, near the top), select action **Remove** and click on **Submit** (RHS, near the top).
 
