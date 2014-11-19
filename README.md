@@ -155,7 +155,7 @@ After you log in, you will see message (at the top right hand side of the screen
 Click on link **Go to messages**. From there, click on **Select All** (LHS, near the top), select action **Remove** and click on **Submit** (RHS, near the top).
 
 ### Set the Unsecure URL
-Select option **System -> Configuration -> Web -> Unsecure**. Change the Base URL from **https** to **http**, and click on **Save Config**. If you don't do this you will get an error when upload images.
+Select option **System -> Configuration -> Web -> Unsecure**. Change the Base URL from **https** to **http**, and click on **Save Config**. If you don't do this, you will get an error when uploading images.
 
 ## Reference
 
