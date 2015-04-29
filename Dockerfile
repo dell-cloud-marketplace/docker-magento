@@ -11,6 +11,9 @@ RUN DEBIAN_FRONTEND=noninteractive \
         php5-curl \
         php5-gd
 
+# Clean package cache
+RUN apt-get -y clean && rm -rf /var/lib/apt/lists/*
+
 RUN php5enmod mcrypt
 
 # Update Apache permissions.
