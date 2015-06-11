@@ -6,7 +6,7 @@ The stack comprises the following components:
 
 Name       | Version                   | Description
 -----------|---------------------------|------------------------------
-Magento    | 1.9.0.1 | E-commerce content management system
+Magento    | 1.9.1.0 | E-commerce content management system
 Ubuntu     | see [docker-lamp-base](https://github.com/dell-cloud-marketplace/docker-lamp-base)                    | Operating system
 MySQL      | see [docker-lamp-base](https://github.com/dell-cloud-marketplace/docker-lamp-base)      | Database
 Apache     | see [docker-lamp-base](https://github.com/dell-cloud-marketplace/docker-lamp-base)      | Web server
