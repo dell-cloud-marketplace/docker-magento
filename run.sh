@@ -27,8 +27,8 @@ if [[ ! -d $VOLUME_HOME/magento ]]; then
         RET=$?
     done
 
-    # Generate a random password for the magento MySQL user.
-    MAGENTO_PASSWORD=`pwgen -c -n -1 12`
+    # If not supplied, generate a random password for the magento MySQL user.
+    MAGENTO_PASSWORD=${MAGENTO_PASS:-$(pwgen -s 12 1)}
 
     echo "========================================================================"
     echo
