@@ -159,6 +159,13 @@ Select option **System -> Configuration -> Web -> Unsecure**. Change the Base UR
 
 ## Reference
 
+### Environmental Variables
+
+Variable     | Default  | Description
+-------------|----------|------------------------------------
+MYSQL_PASS   | *random* | Password for MySQL user **admin**
+MAGENTO_PASS | *random* | Password for MySQL user **magento**
+
 ### Image Details
 
 Inspired by [ilampirai/magentoone](https://github.com/ilampirai/magentoone)
