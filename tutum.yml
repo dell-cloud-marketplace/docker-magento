@@ -1,0 +1,8 @@
+magento:
+  image: dell/magento
+  ports:
+    - "80:80"
+    - "443:443"
+  environment:
+    - MAGENTO_PASS=somepassword
+    - MYSQL_PASS=somepassword
