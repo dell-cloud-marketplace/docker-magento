@@ -40,8 +40,16 @@ Start your container with:
 As follows:
 
 ```no-highlight
-sudo docker run -d -p 80:80 -p 3306:3306 -p 443:443 -v /app:/var/www/html \
--v /data/mysql:/var/lib/mysql --name magento dell/magento
+sudo docker run -d \
+    -p 80:80 \
+    -p 443:443 \
+    -p 3306:3306 \
+    -v /app:/var/www/html \
+    -v /data/mysql:/var/lib/mysql \
+    -e MYSQL_PASS="password"  \
+    -e MAGENTO_PASS="password"  \
+    --name magento \
+    dell/magento
 ```
 
 ### 2. Check the Log Files
