@@ -1,4 +1,4 @@
-FROM dell/lamp-base:1.1
+FROM dell/lamp-base:1.2
 MAINTAINER Dell Cloud Market Place <Cloud_Marketplace@dell.com>
 
 # Do an update of the base packages.
@@ -35,6 +35,9 @@ RUN chmod +x /*.sh
 
 # Add volumes for MySQL and the application.
 VOLUME ["/var/lib/mysql", "/var/www/html"]
+
+# Environmental variables.
+ENV MAGENTO_PASS ""
 
 EXPOSE 80 3306 443
 

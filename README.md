@@ -40,8 +40,16 @@ Start your container with:
 As follows:
 
 ```no-highlight
-sudo docker run -d -p 80:80 -p 3306:3306 -p 443:443 -v /app:/var/www/html \
--v /data/mysql:/var/lib/mysql --name magento dell/magento
+sudo docker run -d \
+    -p 80:80 \
+    -p 443:443 \
+    -p 3306:3306 \
+    -v /app:/var/www/html \
+    -v /data/mysql:/var/lib/mysql \
+    -e MYSQL_PASS="password"  \
+    -e MAGENTO_PASS="password"  \
+    --name magento \
+    dell/magento
 ```
 
 ### 2. Check the Log Files
@@ -158,6 +166,13 @@ Click on link **Go to messages**. From there, click on **Select All** (LHS, near
 Select option **System -> Configuration -> Web -> Unsecure**. Change the Base URL from **https** to **http**, and click on **Save Config**. If you don't do this, you will get an error when uploading images.
 
 ## Reference
+
+### Environmental Variables
+
+Variable     | Default  | Description
+-------------|----------|------------------------------------
+MYSQL_PASS   | *random* | Password for MySQL user **admin**
+MAGENTO_PASS | *random* | Password for MySQL user **magento**
 
 ### Image Details
 
