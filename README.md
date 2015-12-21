@@ -1,3 +1,5 @@
+[![Deploy to Tutum](https://s.tutum.co/deploy-to-tutum.svg)](https://dashboard.tutum.co/stack/deploy/)
+
 # docker-magento
 This image installs [Magento](http://magento.com/), an open-source content management system for e-commerce web sites.
 
